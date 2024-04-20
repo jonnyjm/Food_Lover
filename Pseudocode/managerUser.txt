@@ -1,0 +1,40 @@
+manager class has different functions and controls different aspects of their workers
+
+Lets say that workers are all part of the same class called Employees
+Each having their own attributes, such as wages, employeeID, and rating
+Delivery Drivers have a rating of NULL 
+
+class manager:
+
+    reducePay(workerID, cutNum):
+        workerID.currPay() -= n
+
+    raisePay(workerID, raiseNum)
+        workerId.currPay() += n
+
+    fireWorker(workerID):
+        if (workerType().size() > 2)
+            deleteWorker(workerID)
+        else return "Cannot remove, minimum 2 employees"
+
+    hireWorker():
+        in database.workers() add new worker
+        db.newWorker(name, position, wage)
+
+    evaluteSurfer():
+        if surfer.depositAmt() >= minimum
+            newCustomer(name, surfer.depositAmt()) // surfer needs a certain deposit before being able to become a full newCustomer
+    
+    handleComplaint():
+        // complaints will be handled from wherever they are stored, complaints directed at an employee will have their employee ID given to them
+        // up to the managers discretion on how to handle it 
+
+        print("Complaint:" + db.complaintRead())
+        print("Respond ?)
+        
+        // will then prompt manager to respond to customer
+
+    handleCompliment():
+    // same method as complaints
+    // manager has raise and cuts and fire feature avaibable always in his menu, so this is just to communnicate with customers and send feedback
+
