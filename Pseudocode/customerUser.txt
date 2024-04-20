@@ -1,0 +1,21 @@
+Customer has many options on what he can deposit
+
+class Customer():
+
+    voteDish(rating):
+        \\this will add onto the ratings of the dish by all users and create an average
+        db.ratings(foodID()).addnewrating()
+
+    orderDish(dishID(), address):
+        sendtoRestaurant(dishID(), adress) \\ this will send the information to the restuarnt letting the chef prepare the food n get the driver notified to deliver it
+
+    searchMenu():
+        for menuItems in db.Menu()
+            print(menuItems)
+        
+    disscussChef():
+        sendMsg(manager, msg): //gets message wether discussing or complaining about the chef
+    
+    disscussImporter():
+        sendMsg(manager, msg): //gets message wether discussing or complaining about the importer or delivery person
+
