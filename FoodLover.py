@@ -1,17 +1,20 @@
+from pymongo import MongoClient
 from tkinter import filedialog
 from PIL import Image, ImageTk
 import customtkinter
 
-test_email = "jonnymoreira03@hotmail.com"
-testpw = "Password"
+# Connects the db to the app
+client = MongoClient("mongodb+srv://foodlover:CDOG2CI3GApYWkJv@foodlover.xagchl4.mongodb.net/")
+db = client['users']
 
-
-def newwin(): # cleans screen and loads new window once prompted
+# cleans screen and loads new window once prompted
+def newwin(): 
     for widget in root.winfo_children():
         widget.destroy()
 
 
-def mainscreen(): #main screen where users can sign up or register
+#main screen where users can sign up or register
+def mainscreen(): 
     newwin()
     fl_logo = ImageTk.PhotoImage(Image.open("Images/food_lover.ico").resize((100,100), Image.Resampling.LANCZOS))
     customtkinter.CTkLabel(root, image=fl_logo, text="", bg_color="white").place(relx=0.47, rely= 0.32)
@@ -25,22 +28,52 @@ def mainscreen(): #main screen where users can sign up or register
     customtkinter.CTkLabel(root, text="Copyright: Team F", font=("Futura", 10, "bold"), text_color="black", bg_color="white").place(relx= .48, rely=0.95)
 
 
-def login(): #login window
+
+#login window
+def login(): 
     newwin()
     btn = customtkinter.CTkImage(Image.open("Images/arrow.png"),size=(26, 26))
     register_btn = customtkinter.CTkButton(master=root, image=btn, command=mainscreen, text="", fg_color="white", hover=False)
     register_btn.place(relx=0, rely=0.01)
 
-    customtkinter.CTkLabel(root, text=" Welcome back", compound="left",font=("Futura", 25, "bold"), text_color="black", bg_color="white").place(relx=0.42, rely= 0.3)
+    customtkinter.CTkLabel(root, text=" Welcome back", compound="left",font=("Futura", 25, "bold"), text_color="black", bg_color="white").place(relx=0.43, rely= 0.3)
 
     email_entry = customtkinter.CTkEntry(root, placeholder_text="Email", width=250, placeholder_text_color="grey", text_color="black", fg_color="white")
     email_entry.place(relx=0.4, rely=0.4)
 
     pw_entry = customtkinter.CTkEntry(root, placeholder_text="Password", show="*", width=250, placeholder_text_color="grey", text_color="black", fg_color="white")
-    pw_entry.place(relx=0.4, rely=0.45)
-
-    customtkinter.CTkButton(root, command= lambda:enterPassword(email_entry.get(), pw_entry.get()), text="Enter", fg_color='black', text_color="white").place(rely=0.52, relx=0.45)
+    pw_entry.place(relx=0.4, rely=0.46)
+    error_label = customtkinter.CTkLabel(root, text="", compound="left",font=("Futura", 15, "bold"), text_color="#BB2100", bg_color="white")
+    customtkinter.CTkButton(root, command= lambda:login_check(email_entry.get(), pw_entry.get(), error_label), text="Enter", fg_color='black', text_color="white").place(rely=0.52, relx=0.45)
     
+
+def login_check(email, pw, error_label):
+
+    error_label.configure(text="")
+    if email == "" or pw == "":
+        error_label.configure(text="Please enter a valid email and password")
+        error_label.place(relx=0.38, rely=0.6)
+        return
+    
+    user_data = db['login_data']
+    user = user_data.find_one({"email": email})
+
+    if user:
+        if user["password"] == pw:
+            print(user)
+            return user
+
+        else:
+            error_label.configure(text="The password does not match the email entered")
+            error_label.place(relx=0.38, rely=0.6)
+        
+    else:
+        error_label.configure(text="Email not found")
+        error_label.place(relx=0.47, rely=0.6)
+
+
+
+
 def register():
     newwin()
     btn = customtkinter.CTkImage(Image.open("Images/arrow.png"),size=(26, 26))
@@ -62,12 +95,6 @@ def register():
 
     
 
-def enterPassword(email, pw):
-    if test_email == email and testpw == pw:
-        newwin()
-        customtkinter.CTkLabel(root, text="HELLO USER", compound="left",font=("Futura", 20, "bold"),justify="center", text_color="black", bg_color="white").place(relx=0.44, rely= 0.5)
-    else:
-        customtkinter.CTkLabel(root, text=" No User Found", compound="left",font=("Futura", 20, "bold"),justify="center", text_color="black", bg_color="white").place(relx=0.44, rely= 0.6)
 
 
 
